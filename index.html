@@ -1,12 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Arithmetic Task</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Banking System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .output {
+            border: 1px solid black;
+            padding: 15px;
+            font-family: monospace;
+            white-space: pre-line;
+            margin: 20px 0;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        button {
+            border: 1px solid black;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+    </style>
 </head>
 <body>
-  <h1>Arithmetic Task</h1>
-  <p id="results"></p>
-  <script src="script.js"></script>
+    <div class="container">
+        <h1>Simple Banking System</h1>
+        <button onclick="runBankingSystem()">Start Banking System</button>
+        <div id="output" class="output">Click the button above to start!</div>
+    </div>
+
+    <script>
+        function runBankingSystem() {
+            // Get the output area
+            const output = document.getElementById('output');
+            output.innerHTML = '';
+            
+            // Simple function to print messages
+            function print(message) {
+                output.innerHTML += message + '\n';
+            }
+
+            // 1. Create 4 accounts - very simple objects
+            let blessing = {
+                name: "Blessing",
+                balance: 1000,
+                currency: "USD",
+                type: "Savings"
+            };
+
+            let oladipupo = {
+                name: "Oladipupo",
+                balance: 500,
+                currency: "USD",
+                type: "Checking"
+            };
+
+            let tolu = {
+                name: "Tolu",
+                balance: 800,
+                currency: "USD",
+                type: "Savings"
+            };
+
+            let temi = {
+                name: "Temi",
+                balance: 200,
+                currency: "EUR",
+                type: "Checking"
+            };
+
+            // Show initial accounts
+            print("=== OUR 4 BANK ACCOUNTS ===");
+            print("Blessing has " + blessing.balance + " " + blessing.currency + " (" + blessing.type + ")");
+            print("Oladipupo has " + oladipupo.balance + " " + oladipupo.currency + " (" + oladipupo.type + ")");
+            print("Tolu has " + tolu.balance + " " + tolu.currency + " (" + tolu.type + ")");
+            print("Temi has " + temi.balance + " " + temi.currency + " (" + temi.type + ")");
+
+            // 2. Make deposits (add money)
+            print("\n=== ADDING MONEY (DEPOSITS) ===");
+            
+            // Add 300 to Blessing
+            blessing.balance = blessing.balance + 300;
+            print("Added 300 to Blessing. New balance: " + blessing.balance);
+            
+            // Add 150 to Oladipupo
+            oladipupo.balance = oladipupo.balance + 150;
+            print("Added 150 to Oladipupo. New balance: " + oladipupo.balance);
+
+            // 3. Try to take out money (withdrawals)
+            print("\n=== TAKING OUT MONEY (WITHDRAWALS) ===");
+            
+            // Try to take 100 from Tolu
+            if (tolu.balance >= 100) {
+                tolu.balance = tolu.balance - 100;
+                print("Took out 100 from Tolu. New balance: " + tolu.balance);
+            } else {
+                print("Withdrawal denied for Tolu: insufficient funds");
+            }
+            
+            // Try to take 300 from Temi (should fail - not enough money)
+            if (temi.balance >= 300) {
+                temi.balance = temi.balance - 300;
+                print("Took out 300 from Temi. New balance: " + temi.balance);
+            } else {
+                print("Withdrawal denied for Temi: insufficient funds");
+            }
+
+            // 4. Transfer money between accounts
+            print("\n=== MOVING MONEY BETWEEN ACCOUNTS ===");
+            
+            // Try to move 200 from Blessing to Tolu (both have USD - should work)
+            if (blessing.currency === tolu.currency) {
+                if (blessing.balance >= 200) {
+                    blessing.balance = blessing.balance - 200;
+                    tolu.balance = tolu.balance + 200;
+                    print("Moved 200 from Blessing to Tolu");
+                    print("Blessing now has: " + blessing.balance);
+                    print("Tolu now has: " + tolu.balance);
+                } else {
+                    print("Not enough money in Blessing's account");
+                }
+            } else {
+                print("Transfer failed: currency mismatch");
+            }
+            
+            // Try to move money from Oladipupo to Temi (USD to EUR - should fail)
+            if (oladipupo.currency === temi.currency) {
+                print("Moving money from Oladipupo to Temi");
+            } else {
+                print("Transfer failed: currency mismatch (USD to EUR not allowed)");
+            }
+
+            // 5. Monthly maintenance
+            print("\n=== MONTHLY BANK MAINTENANCE ===");
+            
+            // Blessing has Savings - add interest (2%)
+            if (blessing.type === "Savings") {
+                let interest = blessing.balance * 0.02;
+                blessing.balance = blessing.balance + interest;
+                print("Added interest to Blessing: +" + interest);
+                print("Blessing new balance: " + blessing.balance);
+            }
+            
+            // Oladipupo has Checking - subtract fee (50)
+            if (oladipupo.type === "Checking") {
+                oladipupo.balance = oladipupo.balance - 50;
+                print("Took maintenance fee from Oladipupo: -50");
+                print("Oladipupo new balance: " + oladipupo.balance);
+            }
+            
+            // Tolu has Savings - add interest (2%)
+            if (tolu.type === "Savings") {
+                let interest = tolu.balance * 0.02;
+                tolu.balance = tolu.balance + interest;
+                print("Added interest to Tolu: +" + interest);
+                print("Tolu new balance: " + tolu.balance);
+            }
+            
+            // Temi has Checking - subtract fee (50)
+            if (temi.type === "Checking") {
+                temi.balance = temi.balance - 50;
+                print("Took maintenance fee from Temi: -50");
+                print("Temi new balance: " + temi.balance);
+            }
+
+            // 6. Find who has the most and least money
+            print("\n=== WHO HAS THE MOST AND LEAST MONEY? ===");
+            
+            // Start by saying Blessing has the most and least
+            let richest = blessing;
+            let poorest = blessing;
+            
+            // Check if Oladipupo has more or less
+            if (oladipupo.balance > richest.balance) {
+                richest = oladipupo;
+            }
+            if (oladipupo.balance < poorest.balance) {
+                poorest = oladipupo;
+            }
+            
+            // Check if Tolu has more or less
+            if (tolu.balance > richest.balance) {
+                richest = tolu;
+            }
+            if (tolu.balance < poorest.balance) {
+                poorest = tolu;
+            }
+            
+            // For Temi, convert EUR to USD first (1 EUR = 1.1 USD)
+            let temiInUSD = temi.balance * 1.1;
+            if (temiInUSD > richest.balance) {
+                richest = temi;
+            }
+            if (temiInUSD < poorest.balance) {
+                poorest = temi;
+            }
+            
+            print("Richest person: " + richest.name + " with " + richest.balance + " " + richest.currency);
+            print("Poorest person: " + poorest.name + " with " + poorest.balance + " " + poorest.currency);
+
+            // 7. Check account status
+            print("\n=== ACCOUNT STATUS CHECK ===");
+            
+            // Check Blessing
+            if (blessing.balance > 0) {
+                print("Blessing's account: Active");
+            } else if (blessing.balance === 0) {
+                print("Blessing's account: Empty");
+            } else {
+                print("Blessing's account: Overdrawn");
+            }
+            
+            // Check Oladipupo
+            if (oladipupo.balance > 0) {
+                print("Oladipupo's account: Active");
+            } else if (oladipupo.balance === 0) {
+                print("Oladipupo's account: Empty");
+            } else {
+                print("Oladipupo's account: Overdrawn");
+            }
+            
+            // Check Tolu
+            if (tolu.balance > 0) {
+                print("Tolu's account: Active");
+            } else if (tolu.balance === 0) {
+                print("Tolu's account: Empty");
+            } else {
+                print("Tolu's account: Overdrawn");
+            }
+            
+            // Check Temi
+            if (temi.balance > 0) {
+                print("Temi's account: Active");
+            } else if (temi.balance === 0) {
+                print("Temi's account: Empty");
+            } else {
+                print("Temi's account: Overdrawn");
+            }
+
+            // 8. Final summary
+            print("\n=== FINAL SUMMARY ===");
+            print("Blessing: " + blessing.balance + " " + blessing.currency + " (" + blessing.type + ")");
+            print("Oladipupo: " + oladipupo.balance + " " + oladipupo.currency + " (" + oladipupo.type + ")");
+            print("Tolu: " + tolu.balance + " " + tolu.currency + " (" + tolu.type + ")");
+            print("Temi: " + temi.balance + " " + temi.currency + " (" + temi.type + ")");
+
+            // BONUS: Try currency exchange
+            print("\n=== BONUS: CURRENCY EXCHANGE ===");
+            print("Trying to transfer 50 EUR from Temi to Oladipupo (USD account)");
+            
+            if (temi.currency === oladipupo.currency) {
+                print("Same currency - transfer allowed");
+            } else {
+                print("Different currencies - using exchange rate");
+                print("1 EUR = 1.1 USD");
+                
+                if (temi.balance >= 50) {
+                    let eurAmount = 50;
+                    let usdAmount = eurAmount * 1.1;
+                    
+                    temi.balance = temi.balance - eurAmount;
+                    oladipupo.balance = oladipupo.balance + usdAmount;
+                    
+                    print("Success! Transferred " + eurAmount + " EUR (" + usdAmount + " USD)");
+                    print("Temi new balance: " + temi.balance + " EUR");
+                    print("Oladipupo new balance: " + oladipupo.balance + " USD");
+                } else {
+                    print("Temi doesn't have enough money");
+                }
+            }
+            
+            print("\n=== ALL DONE! ===");
+        }
+    </script>
 </body>
 </html>
